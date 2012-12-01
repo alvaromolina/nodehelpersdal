@@ -1,0 +1,11 @@
+screen /dev/tty.SLAB_USBtoUART 115200 8N1N
+--> abrir conexion
+
+AT+CSCA?
+--> ver SMSC
+
+
+AT+CMGS="65456747"
+> hola<ctrl-z>
+
+--> envia un SMS
