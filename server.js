@@ -41,15 +41,32 @@ io.sockets.on('connection', function(socket) {
       var n =str.split(" ");
       console.log(n);
       if(n[0].toLowerCase() == 'crimen'){
-        mensaje = 'se reporto el crimen. Mucha gracias';
+        
+        
+          n[0]="";
+          mens = n.join();
+          options = {
+            host: 'practiclabs.com',
+            path: '/messages/add/'+mens+'4565',
+            //path: '/Mobiles/getPlateData/'+'2477HEP'+'.json',
+            method: 'GET'
+          };
+        
+          http.request(options, function(response) {
+                  response.on('end', function() {
+                    fn(0,"Incidente registrado. Muchas Gracias.");
+                  });
+                  
+          } ).end();
         
       }else if(n[0].toLowerCase() == 'placa'){
         
         if(typeof n[1] !== "undefined"){
-          
+
           options = {
             host: 'practiclabs.com',
-            path: 'Mobiles/getPlateData/'+n[1].toUpperCase()+'.json',
+            path: '/Mobiles/getPlateData/'+n[1].toUpperCase()+'.json',
+            //path: '/Mobiles/getPlateData/'+'2477HEP'+'.json',
             method: 'GET'
           };
         
@@ -62,24 +79,25 @@ io.sockets.on('connection', function(socket) {
                   
                   // finished? ok, write the data to a file
                   response.on('end', function() {
-                        console.log("placa:"+placadata.toString());                        
-                        jplaca = JSON.parse(placadata);
+                        console.log("placa:"+placadata.toString());
                         
+                        jplaca = JSON.parse(placadata);
                         if(typeof jplaca.Clase!=='undefined'){
-                          fn(0,"Clase:"+jplaca.Clase+" Modelo: "+jplaca.Clase+ " Marca:" + jplaca.Marca+" Color:"+ jplaca.Color);
+                          fn(0,"Clase:"+jplaca.Clase+" Modelo: "+jplaca.Clase+ " Marca:" + jplaca.Marca+" Color:"+ jplaca.Color+ " Puertas:"+jplaca.Puertas+" Radicatoria:"+ jplaca.Radicatoria);
                         }else{
-                          fn(0,'placa no esta nuestra BD')
+                          fn(0,'La placa no esta en nuestra base de datos');
                         }
                   });
                   
           } ).end();
         }else{
           mensaje ='placa invalida';
+          
           fn(0,mensaje);
         }        
       }
       else{
-        mensaje ='favor enviar la palabra crimen o placa';
+        mensaje ='favor enviar la palabra crimen o placa seguida de la placa o texto';
         fn(0,mensaje);
       }
       
