@@ -53,7 +53,6 @@ io.sockets.on('connection', function(socket) {
             method: 'GET'
           };
         
-
           http.request(options, function(response) {
                   var placadata = '';
                   // keep track of the data you receive
@@ -63,10 +62,14 @@ io.sockets.on('connection', function(socket) {
                   
                   // finished? ok, write the data to a file
                   response.on('end', function() {
-                        console.log("placa:"+placadata);                        
+                        console.log("placa:"+placadata.toString());                        
+                        jplaca = JSON.parse(placadata);
                         
-                        fn(0,mensaje);
-                        
+                        if(typeof jplaca.Clase!=='undefined'){
+                          fn(0,"Clase:"+jplaca.Clase+" Modelo: "+jplaca.Clase+ " Marca:" + jplaca.Marca+" Color:"+ jplaca.Color);
+                        }else{
+                          fn(0,'placa no esta nuestra BD')
+                        }
                   });
                   
           } ).end();

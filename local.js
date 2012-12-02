@@ -42,7 +42,7 @@ var sp = new SerialPort("/dev/tty.SLAB_USBtoUART", {
   stopbits: 1,
   parity: 'none',
   flowControl: false,
-  parser: serialport.parsers.readline("\n") 
+  parser: serialport.parsers.readline("\n")
 });
 
 
