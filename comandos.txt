@@ -9,3 +9,5 @@ AT+CMGS="65456747"
 > hola<ctrl-z>
 
 --> envia un SMS
+
+172

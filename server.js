@@ -34,7 +34,20 @@ io.sockets.on('connection', function(socket) {
     
     socket.on('smsrecibido', function (data, fn) {
       console.log(data);
-      fn(0,data.mensaje);
+      
+      var str=data.mensaje;
+      var n =str.split(" ");
+      
+      if(n[0].toLowerCase == 'crimen'){
+        mensaje = 'se reporto el crimen. Mucha gracias';
+      }else if(n[0].toLowerCase == 'placa'){
+        mensaje ='info placa';
+      }
+      else{
+        mensaje ='favor enviar la palabra crimen o placa';
+      }
+      
+      fn(0,mensaje);
     });
     
 });
