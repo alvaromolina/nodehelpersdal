@@ -37,7 +37,7 @@ io.sockets.on('connection', function(socket) {
       
       var str=data.mensaje;
       var n =str.split(" ");
-      
+      console.log(n);
       if(n[0].toLowerCase == 'crimen'){
         mensaje = 'se reporto el crimen. Mucha gracias';
       }else if(n[0].toLowerCase == 'placa'){
