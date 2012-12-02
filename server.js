@@ -7,6 +7,8 @@ var http = require('http')
 var server = http.createServer(app)
 var io = require('socket.io').listen(server);
 
+var httpcliente = require('http');
+
 
 server.listen(8082)
 
@@ -40,14 +42,44 @@ io.sockets.on('connection', function(socket) {
       console.log(n);
       if(n[0].toLowerCase() == 'crimen'){
         mensaje = 'se reporto el crimen. Mucha gracias';
+        
       }else if(n[0].toLowerCase() == 'placa'){
-        mensaje ='info placa';
+        
+        if(typeof n[1] !== "undefined"){
+          
+          options = {
+            host: 'practiclabs.com',
+            path: 'Mobiles/getPlateData/'+n[1].toUpperCase()+'.json',
+            method: 'GET'
+          };
+        
+
+          http.request(options, function(response) {
+                  var placadata = '';
+                  // keep track of the data you receive
+                  response.on('data', function(data) {
+                    placadata += data;
+                  });
+                  
+                  // finished? ok, write the data to a file
+                  response.on('end', function() {
+                        console.log("placa:"+placadata);                        
+                        
+                        fn(0,mensaje);
+                        
+                  });
+                  
+          } ).end();
+        }else{
+          mensaje ='placa invalida';
+          fn(0,mensaje);
+        }        
       }
       else{
         mensaje ='favor enviar la palabra crimen o placa';
+        fn(0,mensaje);
       }
       
-      fn(0,mensaje);
     });
     
 });
