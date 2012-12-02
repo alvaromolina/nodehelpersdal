@@ -22,7 +22,7 @@ server.listen(8083)
 */
 var options = {
   host: 'search.twitter.com',
-  path: '/search.json?q=%23cochavalley',
+  path: '/search.json?q=%23segurimapas',
   method: 'GET'
 };
 
