@@ -7,10 +7,18 @@ var http = require('http')
 var server = http.createServer(app)
 var io = require('socket.io').listen(server);
 
+
+var http_io = require('http')
+var server_io = http.createServer(app)
+var io_web = require('socket.io').listen(server_io);
+
+
+
 var httpcliente = require('http');
 
 
 server.listen(8082)
+server_io.listen(8084)
 
 
 app.get('/', function (req, res) {
@@ -25,6 +33,17 @@ app.get('/sendsms/:numero/:mensaje', function (req, res) {
 
 });
 
+
+io_web.sockets.on('connection', function(socket) { 
+
+    console.log('Client connected from web.');
+    
+    socket.on('disconnect', function() {
+        console.log('Client disconnected.');
+    });
+    
+    
+});
 
 io.sockets.on('connection', function(socket) { 
 
@@ -43,21 +62,24 @@ io.sockets.on('connection', function(socket) {
       if(n[0].toLowerCase() == 'crimen'){
         
         
-          n[0]="";
-          mens = n.join();
+          n[0]="SMS:";
+          mens = n.join(' ');
           options = {
             host: 'practiclabs.com',
-            path: '/messages/add/'+mens+'4565',
+            path: '/messages/add/'+encodeURIComponent(mens),
             //path: '/Mobiles/getPlateData/'+'2477HEP'+'.json',
             method: 'GET'
           };
         
           http.request(options, function(response) {
                   response.on('end', function() {
+                    io_web.sockets.emit('smsweb', { message: mens});
                     fn(0,"Incidente registrado. Muchas Gracias.");
                   });
                   
           } ).end();
+          
+        
         
       }else if(n[0].toLowerCase() == 'placa'){
         

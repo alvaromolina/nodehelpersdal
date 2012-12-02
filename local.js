@@ -8,7 +8,7 @@ var mensajeenviar ='';
 
 var io = require('socket.io-client');
 
-var serverUrl = 'http://localhost:8082/';
+var serverUrl = 'http://50.57.83.147:8082/';
 var conn = io.connect(serverUrl);
 
 conn.on('connect', function(socket) { 
